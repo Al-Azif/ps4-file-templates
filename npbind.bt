@@ -45,7 +45,7 @@ typedef struct npbind_body {
   struct npbind_entry tophy_number;
   struct npbind_entry unk1;
   struct npbind_entry unk2;
-  char padding2[152] <bgcolor=cYellow>;
+  char padding[152] <bgcolor=cYellow>;
 };
 
 struct FILE {

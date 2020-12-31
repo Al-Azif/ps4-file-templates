@@ -1,0 +1,55 @@
+//------------------------------------------------
+//--- 010 Editor v11.0.1 Binary Template
+//
+//      File: npbind.dat
+//   Authors: Al Azif
+//   Version: 1.0.1
+//   Purpose:
+//  Category:
+// File Mask:
+//  ID Bytes:
+//   History:
+//------------------------------------------------
+BigEndian();
+
+typedef struct npbind_header {
+  char magic[4] <bgcolor=cAqua>; // "Ò” " (0xD294A018)
+  uint version <bgcolor=cBlue>;
+  uint64 file_size <bgcolor=cPurple>;
+  uint64 entry_size <bgcolor=cGray>;
+  uint64 num_entries <bgcolor=cWhite>;
+  char padding[96] <bgcolor=cYellow>;
+};
+
+typedef struct npbind_entry {
+  unsigned short type <bgcolor=cWhite>;
+  unsigned short size <bgcolor=cGray>; // Size of `data` including padding
+  if (type == 0x0010) {
+    // NPCommID: 12 Bytes (No null terminator)
+    char data[size] <bgcolor=cGreen>;
+  } else if (type == 0x0011) {
+    // Trophy number: 1 Byte + 11 Bytes of Padding
+    char data[1] <bgcolor=cGreen>;
+    char padding[11] <bgcolor=cYellow>;
+    // Unk Data 1: 176 Bytes
+  } else if (type == 0x0012) {
+    char data[size] <bgcolor=cRed>;
+  } else if (type == 0x0013) {
+    // Unk Data 2: 16 Bytes
+    char data[size] <bgcolor=cRed>;
+  }
+};
+
+typedef struct npbind_body {
+  struct npbind_entry npcommid_name;
+  struct npbind_entry tophy_number;
+  struct npbind_entry unk1;
+  struct npbind_entry unk2;
+  char padding2[140] <bgcolor=cYellow>;
+};
+
+struct FILE {
+  npbind_header header;
+  npbind_body body [ header.num_entries ];
+  char digest[20] <bgcolor=cPurple>; // SHA1 of file without this section
+} file;

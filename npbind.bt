@@ -13,8 +13,8 @@
 BigEndian();
 
 typedef struct npbind_header {
-  char magic[4] <bgcolor=cAqua>; // "Ò” " (0xD294A018)
-  uint version <bgcolor=cBlue>;
+  uint32 magic <bgcolor=cAqua,format=hex>; // "Ò” " (0xD294A018)
+  uint32 version <bgcolor=cBlue>;
   uint64 file_size <bgcolor=cPurple>;
   uint64 entry_size <bgcolor=cGray>;
   uint64 num_entries <bgcolor=cWhite>;
@@ -22,8 +22,8 @@ typedef struct npbind_header {
 };
 
 typedef struct npbind_entry {
-  unsigned short type <bgcolor=cWhite>;
-  unsigned short size <bgcolor=cGray>; // Size of `data` including padding
+  uint16 type <bgcolor=cWhite>;
+  uint16 size <bgcolor=cGray>; // Size of `data` including padding
   if (type == 0x0010) {
     // NPCommID: 12 Bytes (No null terminator)
     char data[size] <bgcolor=cGreen>;
